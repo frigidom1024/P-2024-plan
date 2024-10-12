@@ -106,11 +106,28 @@ function calculate(expression) {
   // 调用 evaluate 函数计算最终结果并返回
   return evaluate();
 }
+const buttons = document.querySelectorAll('.button');
+const display = document.querySelector('.left-aligned-text');
+const equalsButton = document.getElementById('equals');
 
-// 使用示例
-const result = calculate("(3+4)*4^2");
-console.log(result); // 输出计算结果
-const result2 = calculate("√(9+7)");
-console.log(result2);
-const result3 = calculate("sin(3.14/2) + cos(0) + tan(0)");
-console.log(result3); 
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    if (button.id === 'clear') {
+      display.textContent = '';
+    } else if (button.id === 'backspace') {
+      display.textContent = display.textContent.slice(0, -1);
+    } else if (button.id === 'equals') {
+      const value = display.textContent;
+      handleValue(value);
+      // 这里可以添加更多对结果的处理逻辑
+    } else {
+      display.textContent += button.textContent;
+    }
+  });
+});
+
+function handleValue(value) {
+       value = value.replace(/\×/g, '*').replace(/\÷/g, '/');
+      const result = calculate(value);
+      display.textContent = result;
+}
